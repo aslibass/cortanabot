@@ -1,0 +1,52 @@
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Bot Application.dll.config
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Bot Application.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Bot Application.pdb
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Autofac.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Chronic.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.Autofac.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Connector.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Rest.ClientRuntime.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Newtonsoft.Json.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Net.Http.Formatting.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.WebHost.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Autofac.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.Autofac.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Connector.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Newtonsoft.Json.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Net.Http.Formatting.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.WebHost.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\ar\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\cs\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\de-dE\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\en\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\es\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\fa\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\fr\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\ja\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\ru\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Release\LuisBot.csprojResolveAssemblyReference.cache
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Release\LuisBot.csproj.CoreCompileInputs.cache
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Release\Bot Application.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Release\Bot Application.pdb
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Logging.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocols.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Tokens.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Logging.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocols.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Tokens.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\it\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\nl\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\pt-BR\Microsoft.Bot.Builder.resources.dll

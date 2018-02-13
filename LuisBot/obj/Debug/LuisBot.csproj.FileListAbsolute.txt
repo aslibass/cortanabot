@@ -1,0 +1,93 @@
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Bot Application.dll.config
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Bot Application.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Bot Application.pdb
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Autofac.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Chronic.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.Autofac.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Connector.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Rest.ClientRuntime.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Newtonsoft.Json.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Net.Http.Formatting.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.WebHost.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Autofac.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Builder.Autofac.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.Bot.Connector.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\Newtonsoft.Json.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Net.Http.Formatting.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\System.Web.Http.WebHost.xml
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\ar\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\cs\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\de-dE\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\en\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\es\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\fa\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\fr\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\ja\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\ru\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Debug\LuisBot.csprojResolveAssemblyReference.cache
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Debug\LuisBot.csproj.CoreCompileInputs.cache
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Debug\Bot Application.dll
+C:\Data\Cortana-Skills-Samples-Build-2017\B8029\CortanaSkillsHotelFinder\LuisBot\obj\Debug\Bot Application.pdb
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Bot Application.dll.config
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Bot Application.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Bot Application.pdb
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Autofac.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Chronic.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.Autofac.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.Bot.Connector.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Logging.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Tokens.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.Rest.ClientRuntime.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Newtonsoft.Json.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.Net.Http.Formatting.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.Web.Http.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.Web.Http.WebHost.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Autofac.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.Autofac.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.Bot.Connector.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Logging.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Tokens.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Newtonsoft.Json.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.Net.Http.Formatting.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.Web.Http.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\System.Web.Http.WebHost.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\ar\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\cs\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\de-dE\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\en\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\es\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\fa\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\fr\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\it\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\ja\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\nl\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\pt-BR\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\ru\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\LuisBot.csprojResolveAssemblyReference.cache
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\LuisBot.csproj.CoreCompileInputs.cache
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\Bot Application.dll
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\Bot Application.pdb
