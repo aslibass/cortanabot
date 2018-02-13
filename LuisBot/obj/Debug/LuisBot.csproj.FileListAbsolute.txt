@@ -87,7 +87,6 @@ C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\nl\Microsoft.Bot.Builder.r
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\pt-BR\Microsoft.Bot.Builder.resources.dll
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\ru\Microsoft.Bot.Builder.resources.dll
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
-C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\LuisBot.csprojResolveAssemblyReference.cache
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\LuisBot.csproj.CoreCompileInputs.cache
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\Bot Application.dll
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\Bot Application.pdb
