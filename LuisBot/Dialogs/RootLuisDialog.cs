@@ -13,15 +13,32 @@
     using System.Text;
 
     [Serializable]
-    [LuisModel("b8a5b043-d818-477b-9831-58abf2d38a81", "5c226b04f1044ae88ad7442ccde33eea")]
+    [LuisModel("b6399087-dea1-480b-8dcb-d56a007340ce", "5c226b04f1044ae88ad7442ccde33eea")]
     public class RootLuisDialog : LuisDialog<object>
     {
+        //Entities from the CoffeeLuis LUIS APP
+        private const string EntityCoffeeStrength = "coffeeStrength";
+        private const string EntityCoffeeType = "coffeeType";
+        private const string EntityFlavouring = "flavouring";
+        private const string EntityHeatLevel = "heatLevel";
+        private const string EntityMilkOption = "milkoption";
+        private const string EntitySize = "size";
+        private const string EntitySpoonsOfSugar = "spoonsOfSugar";
+        private const string EntitySugar = "sugar";
+
+        //Intents from the CoffeeLuis LUIS APP
+        public const string IntentCappuccino = "Cappuccino";
+        public const string IntentChaiLatte = "ChaiLatte";
+        public const string IntentEspressos = "Espressos";
+        public const string IntentFlatWhite = "FlatWhite";
+        public const string IntentLatte = "Latte";
+        public const string IntentLongBlack = "LongBlack";
+        public const string IntentMocha = "Mocha";
+
+
         private const string EntityGeographyCity = "builtin.geography.city";
-
         private const string EntityHotelName = "Hotel";
-
         private const string EntityAirportCode = "AirportCode";
-
         private IList<string> titleOptions = new List<string> { "“Very stylish, great stay, great staff”", "“good hotel, awful meals”", "“Needs more attention to little things”", "“Lovely small hotel ideally situated to explore the area.”", "“Positive surprise”", "“Beautiful suite and resort”" };
 
         /// <summary>
@@ -59,6 +76,122 @@
 
             context.Wait(this.MessageReceived);
         }
+
+        //The user want a Cappuccino
+        [LuisIntent(IntentCappuccino)]
+        public async Task OnIntent(IDialogContext context, LuisResult result)
+        {
+            var progressMessage = context.MakeMessage();
+            progressMessage.Summary = progressMessage.Speak = $"Setting up your Cappuccino Order";
+            progressMessage.InputHint = InputHints.IgnoringInput;
+            await context.PostAsync(progressMessage);
+            //await context.PostAsync($"In the Cappuccino Intent...");
+            //await context.PostAsync($"**Query**: {result.Query}, **Intent**: {result.Intents[0].Intent}");
+            //await this.ShowLuisResult(context, result);
+            Coffee mycoffee = this.BotEntityRecognition(result.Intents[0].Intent, result);
+            var resultMessage = context.MakeMessage();
+            resultMessage.InputHint = InputHints.AcceptingInput;
+            resultMessage.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+            resultMessage.Attachments = new List<Attachment>();
+            HeroCard heroCard = new HeroCard()
+            {
+                Title = mycoffee.CoffeeType,
+                Subtitle = mycoffee.ToString(),
+                Images = new List<CardImage>()
+                       {
+                           new CardImage() { Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg" }
+
+                        },
+                 Buttons = new List<CardAction>()
+                       {
+                          new CardAction()
+                          {
+                              Title = "Place Order",
+
+                                Type = ActionTypes.OpenUrl,
+
+                                Value = $"https://en.wikipedia.org/wiki/Cappuccino"
+
+                            }
+
+                        }
+
+            };
+            resultMessage.Attachments.Add(heroCard.ToAttachment());
+            await context.PostAsync(resultMessage);
+        }
+
+        //Show the result of the LUIS Intent
+        private async Task ShowLuisResult(IDialogContext context, LuisResult result)
+        {
+            // get recognized entities
+            //string entities = this.BotEntityRecognition(result.Intents[0].Intent, result);
+
+            // round number
+            // string roundedScore = result.Intents[0].Score != null ? (Math.Round(result.Intents[0].Score.Value, 2).ToString()) : "0";
+
+            //await context.PostAsync($"**Query**: {result.Query}, **Intent**: {result.Intents[0].Intent}, **Score**: {roundedScore}. **Entities**: {entities}");
+            await context.PostAsync($"**Query**: {result.Query}");
+            context.Wait(MessageReceived);
+        }
+
+        //Collect the entities under the Intent that define the sugars, size, flavours etc related to the coffee
+        public Coffee BotEntityRecognition(string intentName, LuisResult result)
+        {
+            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
+            //new cup of coffee
+            var mycoffee = new Coffee();
+            mycoffee.SetCommonOptions();
+            mycoffee.CoffeeType = result.Intents[0].Intent;
+
+            //initialize to most common options
+
+
+            foreach (EntityRecommendation item in listOfEntitiesFound)
+            {
+                if (item.Entity == EntityCoffeeStrength)
+                {
+                    mycoffee.CoffeeStrength = item.Entity;
+                }
+                else if (item.Entity == EntityCoffeeType)
+                {
+                    mycoffee.CoffeeType = item.Entity;
+                }
+                else if (item.Entity == EntityFlavouring)
+                {
+                    mycoffee.Flavour = item.Entity;
+                }
+                else if (item.Entity == EntityHeatLevel)
+                {
+                    mycoffee.HeatLevel = item.Entity;
+                }
+                else if (item.Entity == EntityMilkOption)
+                {
+                    mycoffee.MilkType = item.Entity;
+                }
+                else if (item.Entity == EntitySize)
+                {
+                    mycoffee.Size = item.Entity;
+                }
+                else if (item.Entity == EntitySpoonsOfSugar)
+                {
+                    mycoffee.SpoonsOfSugar = item.Entity;
+                }
+                else if (item.Entity == EntitySugar)
+                {
+                    mycoffee.Sugar = item.Entity;
+                }
+                else
+                {
+                    //add error handling code
+                }
+            }
+
+            return mycoffee;
+            //return mycoffee.ToString();
+        }
+
+
 
         [LuisIntent("SearchHotels")]
         public async Task Search(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)

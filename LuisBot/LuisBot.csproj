@@ -126,6 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="CoffeeQuery.cs" />
+    <Compile Include="Coffee.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\RootLuisDialog.cs" />
     <Compile Include="Global.asax.cs">
@@ -145,6 +147,7 @@
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\LuisBot20180212042613 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\vjcortana7 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\vjcortanabot10 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\vjcortanabot2 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\vjcortanabot4 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\vjcortanabot5 - Web Deploy.pubxml" />
