@@ -76,49 +76,30 @@
 
             context.Wait(this.MessageReceived);
         }
+        
 
         //The user want a Cappuccino
         [LuisIntent(IntentCappuccino)]
         public async Task OnIntent(IDialogContext context, LuisResult result)
         {
+            //TEST QUERY IS 
+            // i would like to order a double shot cappuccino with two sugars and a shot of hazelnut 
             var progressMessage = context.MakeMessage();
-            progressMessage.Summary = progressMessage.Speak = $"Setting up your Cappuccino Order";
+            progressMessage.Summary = progressMessage.Speak = $"Ready to setup your Cappuccino Order";
             progressMessage.InputHint = InputHints.IgnoringInput;
             await context.PostAsync(progressMessage);
-            //await context.PostAsync($"In the Cappuccino Intent...");
-            //await context.PostAsync($"**Query**: {result.Query}, **Intent**: {result.Intents[0].Intent}");
-            //await this.ShowLuisResult(context, result);
-            Coffee mycoffee = this.BotEntityRecognition(result.Intents[0].Intent, result);
-            var resultMessage = context.MakeMessage();
-            resultMessage.InputHint = InputHints.AcceptingInput;
-            resultMessage.AttachmentLayout = AttachmentLayoutTypes.Carousel;
-            resultMessage.Attachments = new List<Attachment>();
-            HeroCard heroCard = new HeroCard()
-            {
-                Title = mycoffee.CoffeeType,
-                Subtitle = mycoffee.ToString(),
-                Images = new List<CardImage>()
-                       {
-                           new CardImage() { Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg" }
+            
+            //set up coffee object from the entities
+            //Coffee mycoffee = this.BotEntityRecognition(result.Intents[0].Intent, result);
 
-                        },
-                 Buttons = new List<CardAction>()
-                       {
-                          new CardAction()
-                          {
-                              Title = "Place Order",
+            // Use a FormDialog to query the user for missing destination, if necessary
+            
+            CoffeeQuery coffeeQuery = this.CoffeeEntityRecognition(result.Intents[0].Intent, result);
 
-                                Type = ActionTypes.OpenUrl,
+            var coffeeFormDialog = new FormDialog<CoffeeQuery>(coffeeQuery, this.BuildCoffeeForm, FormOptions.PromptInStart, result.Entities);
+            context.Call(coffeeFormDialog, this.ResumeAfterCoffeeFormDialog);
 
-                                Value = $"https://en.wikipedia.org/wiki/Cappuccino"
-
-                            }
-
-                        }
-
-            };
-            resultMessage.Attachments.Add(heroCard.ToAttachment());
-            await context.PostAsync(resultMessage);
+            
         }
 
         //Show the result of the LUIS Intent
@@ -135,13 +116,12 @@
             context.Wait(MessageReceived);
         }
 
-        //Collect the entities under the Intent that define the sugars, size, flavours etc related to the coffee
-        public Coffee BotEntityRecognition(string intentName, LuisResult result)
+        public CoffeeQuery CoffeeEntityRecognition(string intentName, LuisResult result)
         {
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
             //new cup of coffee
-            var mycoffee = new Coffee();
-            mycoffee.SetCommonOptions();
+            CoffeeQuery mycoffee = new CoffeeQuery();
+            //mycoffee.SetCommonOptions();
             mycoffee.CoffeeType = result.Intents[0].Intent;
 
             //initialize to most common options
@@ -149,35 +129,35 @@
 
             foreach (EntityRecommendation item in listOfEntitiesFound)
             {
-                if (item.Entity == EntityCoffeeStrength)
+                if (item.Type == EntityCoffeeStrength)
                 {
                     mycoffee.CoffeeStrength = item.Entity;
                 }
-                else if (item.Entity == EntityCoffeeType)
+                else if (item.Type == EntityCoffeeType)
                 {
                     mycoffee.CoffeeType = item.Entity;
                 }
-                else if (item.Entity == EntityFlavouring)
+                else if (item.Type == EntityFlavouring)
                 {
                     mycoffee.Flavour = item.Entity;
                 }
-                else if (item.Entity == EntityHeatLevel)
+                else if (item.Type == EntityHeatLevel)
                 {
                     mycoffee.HeatLevel = item.Entity;
                 }
-                else if (item.Entity == EntityMilkOption)
+                else if (item.Type == EntityMilkOption)
                 {
                     mycoffee.MilkType = item.Entity;
                 }
-                else if (item.Entity == EntitySize)
+                else if (item.Type == EntitySize)
                 {
-                    mycoffee.Size = item.Entity;
+                   // mycoffee.Size= item.Entity;
                 }
-                else if (item.Entity == EntitySpoonsOfSugar)
+                else if (item.Type == EntitySpoonsOfSugar)
                 {
                     mycoffee.SpoonsOfSugar = item.Entity;
                 }
-                else if (item.Entity == EntitySugar)
+                else if (item.Type == EntitySugar)
                 {
                     mycoffee.Sugar = item.Entity;
                 }
@@ -192,83 +172,64 @@
         }
 
 
-
-        [LuisIntent("SearchHotels")]
-        public async Task Search(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        //Collect the entities under the Intent that define the sugars, size, flavours etc related to the coffee
+        public Coffee BotEntityRecognition(string intentName, LuisResult result)
         {
-            bool isWelcomeDone = false;
-            context.ConversationData.TryGetValue<bool>("WelcomeDone", out isWelcomeDone);
+            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
+            //new cup of coffee
+            var mycoffee = new Coffee();
+            //mycoffee.SetCommonOptions();
+            mycoffee.CoffeeType = result.Intents[0].Intent;
 
-            // Did we already do this? Has the user followed up an initial query with another one?
-            if (!isWelcomeDone)
+            //initialize to most common options
+
+
+            foreach (EntityRecommendation item in listOfEntitiesFound)
             {
-                var response = context.MakeMessage();
-                // For display text, use Summary to display large font, italics - this is to emphasize this
-                // is the Skill speaking, not Cortana
-                // Continue the displayed text using the Text property of the response message
-                response.Summary = $"Welcome to the Hotels finder!";
-                response.Text = $"We are analyzing your message: '{(await activity).Text}'...";
-                // Speak is what is spoken out
-                response.Speak = @"<speak version=""1.0"" xml:lang=""en-US"">Welcome to the Hotels finder!<break time=""1000ms""/></speak>"; ;
-                // InputHint influences how the microphone behaves
-                response.InputHint = InputHints.IgnoringInput;
-                // Post the response message
-                await context.PostAsync(response);
-
-                // Set a flag in conversation data to record that we already sent out the Welcome message
-                context.ConversationData.SetValue<bool>("WelcomeDone", true);
-            }
-
-            // Check that the user has specified either a destination city, or an airport code
-            var hotelsQuery = new HotelsQuery();
-
-            EntityRecommendation cityEntityRecommendation;
-
-            if (result.TryFindEntity(EntityGeographyCity, out cityEntityRecommendation))
-            {
-                cityEntityRecommendation.Type = "Destination";
-            }
-
-            // Use a FormDialog to query the user for missing destination, if necessary
-            var hotelsFormDialog = new FormDialog<HotelsQuery>(hotelsQuery, this.BuildHotelsForm, FormOptions.PromptInStart, result.Entities);
-
-            context.Call(hotelsFormDialog, this.ResumeAfterHotelsFormDialog);
-        }
-
-        [LuisIntent("ShowHotelsReviews")]
-        public async Task Reviews(IDialogContext context, LuisResult result)
-        {
-            EntityRecommendation hotelEntityRecommendation;
-
-            if (result.TryFindEntity(EntityHotelName, out hotelEntityRecommendation))
-            {
-                await context.PostAsync($"Looking for reviews of '{hotelEntityRecommendation.Entity}'...");
-
-                var resultMessage = context.MakeMessage();
-                resultMessage.AttachmentLayout = AttachmentLayoutTypes.Carousel;
-                resultMessage.Attachments = new List<Attachment>();
-
-                for (int i = 0; i < 5; i++)
+                if (item.Type == EntityCoffeeStrength)
                 {
-                    var random = new Random(i);
-                    ThumbnailCard thumbnailCard = new ThumbnailCard()
-                    {
-                        Title = this.titleOptions[random.Next(0, this.titleOptions.Count - 1)],
-                        Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris odio magna, sodales vel ligula sit amet, vulputate vehicula velit. Nulla quis consectetur neque, sed commodo metus.",
-                        Images = new List<CardImage>()
-                        {
-                            new CardImage() { Url = "https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif" }
-                        },
-                    };
-
-                    resultMessage.Attachments.Add(thumbnailCard.ToAttachment());
+                    mycoffee.CoffeeStrength = item.Entity;
                 }
-
-                await context.PostAsync(resultMessage);
+                else if (item.Type == EntityCoffeeType)
+                {
+                    mycoffee.CoffeeType = item.Entity;
+                }
+                else if (item.Type == EntityFlavouring)
+                {
+                    mycoffee.Flavour = item.Entity;
+                }
+                else if (item.Type == EntityHeatLevel)
+                {
+                    mycoffee.HeatLevel = item.Entity;
+                }
+                else if (item.Type == EntityMilkOption)
+                {
+                    mycoffee.MilkType = item.Entity;
+                }
+                else if (item.Type == EntitySize)
+                {
+                    mycoffee.Size = item.Entity;
+                }
+                else if (item.Type == EntitySpoonsOfSugar)
+                {
+                    mycoffee.SpoonsOfSugar = item.Entity;
+                }
+                else if (item.Type == EntitySugar)
+                {
+                    mycoffee.Sugar = item.Entity;
+                }
+                else
+                {
+                    //add error handling code
+                }
             }
 
-            context.Wait(this.MessageReceived);
+            return mycoffee;
+            //return mycoffee.ToString();
         }
+
+                    
+        
 
         [LuisIntent("Help")]
         public async Task Help(IDialogContext context, LuisResult result)
@@ -302,6 +263,131 @@
             context.Done(default(object));
         }
 
+        private IForm<CoffeeQuery> BuildCoffeeForm()
+        {
+            OnCompletionAsyncDelegate<CoffeeQuery> processCoffeeOrder = async (context, state) =>
+            {
+                var message = "Searching for hotels";
+                var speech = @"<speak version=""1.0"" xml:lang=""en-US"">Making sure I got all your requirements";
+                if (!string.IsNullOrEmpty(state.CoffeeOwner))
+                {
+                    message += $" in { state.CoffeeOwner}...";
+                    speech += $" in { state.CoffeeOwner}...";
+                }
+                else if (!string.IsNullOrEmpty(state.CoffeeType))
+                {
+                    message += $" in { state.CoffeeType}...";
+                    speech += $" in { state.CoffeeType}...";
+                }
+                else if (!string.IsNullOrEmpty(state.CoffeeStrength))
+                {
+                    message += $" in { state.CoffeeStrength}...";
+                    speech += $" in { state.CoffeeStrength}...";
+                }
+                else if (!string.IsNullOrEmpty(state.MilkType))
+                {
+                    message += $" in { state.MilkType}...";
+                    speech += $" in { state.MilkType}...";
+                }
+                else if (!string.IsNullOrEmpty(state.SpoonsOfSugar))
+                {
+                    message += $" in { state.SpoonsOfSugar} Sugars...";
+                    speech += $" in { state.SpoonsOfSugar} Sugars...";
+                }
+                speech += "</speak>";
+
+                var response = context.MakeMessage();
+                response.Summary = message;
+                response.Speak = speech;
+                response.InputHint = InputHints.IgnoringInput;
+                await context.PostAsync(response);
+            };
+            return new FormBuilder<CoffeeQuery>()
+                .AddRemainingFields()
+                .OnCompletion(processCoffeeOrder)
+                .Build();
+
+            
+            /*return new FormBuilder<CoffeeQuery>()
+                .Field(nameof(CoffeeQuery.CoffeeOwner))
+                .Field(nameof(CoffeeQuery.CoffeeStrength))
+                .Field(nameof(CoffeeQuery.MilkType))
+                .Field(nameof(CoffeeQuery.Flavour))
+                .Field(nameof(CoffeeQuery.SpoonsOfSugar))
+                .OnCompletion(processCoffeeOrder)
+                .Build();
+                */
+
+
+        }
+
+        private async Task ResumeAfterCoffeeFormDialog(IDialogContext context, IAwaitable<CoffeeQuery> result)
+        {
+            try
+            {
+                Coffee mycoffee = await this.GetCoffeeAsync(result);
+
+                // We show results differently depending on whether this is a Voice-only, or Voice+screen client
+                bool HasDisplay = true;
+                var messageActivity = context.Activity.AsMessageActivity();
+                if (messageActivity.Entities != null)
+                {
+                    foreach (var entity in messageActivity.Entities)
+                    {
+                        if (entity.Type == "DeviceInfo")
+                        {
+                            dynamic deviceInfo = entity.Properties;
+                            HasDisplay = (bool)deviceInfo.supportsDisplay;
+                        }
+                    }
+                }
+                if (HasDisplay)
+                {
+                    await PresentCoffeeResultsVisual(context, mycoffee);
+                }
+                else
+                {
+                   // await PresentResultsVoiceOnly(context, mycoffee);
+                }
+            }
+            catch (FormCanceledException ex)
+            {
+                string reply;
+
+                if (ex.InnerException == null)
+                {
+                    reply = "You have canceled the operation.";
+                }
+                else
+                {
+                    reply = $"Oops! Something went wrong :( Technical Details: {ex.InnerException.Message}";
+                }
+                var errorMessage = context.MakeMessage();
+                errorMessage.Text = errorMessage.Speak = reply;
+                errorMessage.InputHint = InputHints.IgnoringInput;
+                await context.PostAsync(errorMessage);
+            }
+        }
+
+        private async Task<Coffee> GetCoffeeAsync(IAwaitable<CoffeeQuery> result)
+        {
+            var coffeeQuery = await result;
+            var mycoffee = new Coffee();
+            //mycoffee.SetCommonOptions();
+            mycoffee.coffeeOwner = coffeeQuery.CoffeeOwner;
+            mycoffee.CoffeeStrength = coffeeQuery.CoffeeStrength;
+            mycoffee.CoffeeType = coffeeQuery.CoffeeType;
+            mycoffee.Flavour = coffeeQuery.Flavour;
+            mycoffee.MilkType = coffeeQuery.MilkType;
+            mycoffee.HeatLevel = "Hot";
+            mycoffee.Size = "Regular";
+            mycoffee.SpoonsOfSugar = coffeeQuery.SpoonsOfSugar;
+            //mycoffee.Sugar = item.Entity;
+            //await Task.Delay(1000);
+            return mycoffee;
+        }
+
+        /*
         private IForm<HotelsQuery> BuildHotelsForm()
         {
             OnCompletionAsyncDelegate<HotelsQuery> processHotelsSearch = async (context, state) =>
@@ -385,6 +471,47 @@
                 await context.PostAsync(errorMessage);
             }
         }
+        */
+
+        private async Task PresentCoffeeResultsVisual(IDialogContext context, Coffee mycoffee)
+        {
+            var progressMessage = context.MakeMessage();
+            progressMessage.Summary = progressMessage.Speak = $"Here is what you have ordered. Click confirm to send your order to the Barista:";
+            progressMessage.InputHint = InputHints.IgnoringInput;
+            await context.PostAsync(progressMessage);
+
+            var resultMessage = context.MakeMessage();
+            resultMessage.InputHint = InputHints.AcceptingInput;
+            resultMessage.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+            resultMessage.Attachments = new List<Attachment>();
+            HeroCard heroCard = new HeroCard()
+            {
+                Title = mycoffee.CoffeeType,
+                Subtitle = mycoffee.ToString(),
+                Images = new List<CardImage>()
+                       {
+                           new CardImage() { Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg" }
+
+                        },
+                Buttons = new List<CardAction>()
+                       {
+                          new CardAction()
+                          {
+                              Title = "Place Order",
+
+                                Type = ActionTypes.OpenUrl,
+
+                                Value = $"https://en.wikipedia.org/wiki/Cappuccino"
+
+                            }
+
+                        }
+
+            };
+            resultMessage.Attachments.Add(heroCard.ToAttachment());
+           
+            await context.PostAsync(resultMessage);
+        }
 
         private async Task PresentResultsVisual(IDialogContext context, IEnumerable<Hotel> hotels)
         {
@@ -424,6 +551,7 @@
 
             await context.PostAsync(resultMessage);
         }
+
 
         private async Task PresentResultsVoiceOnly(IDialogContext context, IEnumerable<Hotel> hotels)
         {
@@ -517,7 +645,7 @@
                 Hotel hotel = new Hotel()
                 {
                     //Name = $"{searchQuery.Destination ?? searchQuery.AirportCode} Hotel {i}",
-                    Name = $"{hotelNames[i-1]} Hotel",
+                    Name = $"{hotelNames[i - 1]} Hotel",
                     Location = searchQuery.Destination ?? searchQuery.AirportCode,
                     Rating = random.Next(1, 5),
                     NumberOfReviews = random.Next(0, 5000),
@@ -537,6 +665,8 @@
         }
     }
 
+       
+    
     static class StringExtensions
     {
         public static string Capitalize(this string input)

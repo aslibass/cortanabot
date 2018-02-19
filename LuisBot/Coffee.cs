@@ -10,6 +10,8 @@ namespace LuisBot
     [Serializable]
     public class Coffee
     {
+        public string coffeeOwner { get; set; }
+
         public string CoffeeType { get; set; }
 
         public string Size { get; set; }
@@ -30,16 +32,18 @@ namespace LuisBot
 
         public string coffeeOrder = "";
 
+        public bool optionsSet { get; set; }
+
         public override string ToString()
         {
             coffeeOrder = "";
             if (this.Sugar=="No Sugar")
             {
-                coffeeOrder = $"Request for a {this.Size} sized, {this.CoffeeStrength} {this.CoffeeType} with {this.MilkType} milk and no sugar]";
+                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.HeatLevel} {this.CoffeeStrength} {this.CoffeeType} with {this.MilkType} milk, with {this.Flavour} and no sugar";
             }
             else
             {
-                coffeeOrder = $"Request for a {this.Size} sized, {this.CoffeeStrength} {this.CoffeeType} with {this.MilkType} milk and {this.SpoonsOfSugar} sugar(s)]";
+                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.CoffeeStrength} {this.CoffeeType} with {this.MilkType} milk,with {this.Flavour} and {this.SpoonsOfSugar} sugar(s)";
             }
             return coffeeOrder;
         }
@@ -52,6 +56,7 @@ namespace LuisBot
             this.MilkType = "Full Cream";
             this.SpoonsOfSugar = "none";
             this.Sugar = "No Sugar";
+            this.HeatLevel = "Hot";
         }
     }  
 
