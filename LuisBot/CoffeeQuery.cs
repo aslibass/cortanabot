@@ -14,28 +14,30 @@
         [Optional]
         public string CoffeeType { get; set; }
 
-        [Prompt("What Size did you want?")]
+        [Prompt("How Hot did you want it? Say Warm, Hot or Extra Hot.")]
         [Optional]
         public string HeatLevel { get; set; }
 
-        [Prompt("Double Shot, Regular Shot, or Decaf?")]
+        [Prompt("How strong did you want it? Say Extra Shot, Regular, or Decaf.")]
         [Optional]
         public string CoffeeStrength { get; set; }
 
-        [Prompt("Full Cream Milk, Skim, Almond or Soy?")]
+        [Prompt("What Milk did you want? Say either Full Cream , Skim, Almond or Soy.")]
         [Optional]
         public string MilkType { get; set; }
 
-        [Prompt("How many Sugars?")]
+        [Prompt("Did you want Sugar or Artificial Sweetner? Say Sugar or Artificial Sweetner or None")]
+        [Optional]
+        public string Sugar { get; set; }
+
+        [Prompt("How many Sugars or Artifical Sweetner Saches should i put? Say None if you did not want any.")]
         [Optional]
         public string SpoonsOfSugar { get; set; }
 
-        [Prompt("Add Hazelnut or Caramel Flavouring?")]
+        [Prompt("Did you want any Additional Flavouring? Say, Hazelnut, Caramel or None.")]
         [Optional]
         public string Flavour { get; set; }
 
-        [Prompt("Did you want Sugar?")]
-        [Optional]
-        public string Sugar { get; set; }
+     
     }
 }

@@ -39,11 +39,11 @@ namespace LuisBot
             coffeeOrder = "";
             if (this.Sugar=="No Sugar")
             {
-                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.HeatLevel} {this.CoffeeStrength} {this.CoffeeType} with {this.MilkType} milk, with {this.Flavour} and no sugar";
+                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.HeatLevel} {this.CoffeeStrength} strength {this.CoffeeType} with {this.MilkType} milk, along with {this.Flavour} flavour and no sugar";
             }
             else
             {
-                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.CoffeeStrength} {this.CoffeeType} with {this.MilkType} milk,with {this.Flavour} and {this.SpoonsOfSugar} sugar(s)";
+                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.HeatLevel} {this.CoffeeStrength} strength {this.CoffeeType} with {this.MilkType} milk, along with {this.Flavour} flavour and {this.SpoonsOfSugar} sugar(s)";
             }
             return coffeeOrder;
         }

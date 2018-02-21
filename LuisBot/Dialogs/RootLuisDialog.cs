@@ -27,14 +27,16 @@
         private const string EntitySugar = "sugar";
 
         //Intents from the CoffeeLuis LUIS APP
-        public const string IntentCappuccino = "Cappuccino";
+        public const string IntentOrder = "Order";
+        public const string IntentHelp = "Help";
+        /*public const string IntentCappuccino = "Cappuccino";
         public const string IntentChaiLatte = "ChaiLatte";
         public const string IntentEspressos = "Espressos";
         public const string IntentFlatWhite = "FlatWhite";
         public const string IntentLatte = "Latte";
         public const string IntentLongBlack = "LongBlack";
         public const string IntentMocha = "Mocha";
-
+        */
 
         private const string EntityGeographyCity = "builtin.geography.city";
         private const string EntityHotelName = "Hotel";
@@ -79,13 +81,13 @@
         
 
         //The user want a Cappuccino
-        [LuisIntent(IntentCappuccino)]
+        [LuisIntent(IntentOrder)]
         public async Task OnIntent(IDialogContext context, LuisResult result)
         {
             //TEST QUERY IS 
-            // i would like to order a double shot cappuccino with two sugars and a shot of hazelnut 
+            // I would like to order a double shot cappuccino with two sugars and a shot of hazelnut
             var progressMessage = context.MakeMessage();
-            progressMessage.Summary = progressMessage.Speak = $"Ready to setup your Cappuccino Order";
+            progressMessage.Summary = progressMessage.Speak = $"Ready to setup your Order";
             progressMessage.InputHint = InputHints.IgnoringInput;
             await context.PostAsync(progressMessage);
             
@@ -235,10 +237,9 @@
         public async Task Help(IDialogContext context, LuisResult result)
         {
             var response = context.MakeMessage();
-            response.Summary = "Hi! Try asking me things like 'search for hotels in Seattle', 'search for hotels near LAX airport' or 'show me the reviews of The Bot Resort'";
-            response.Speak = @"<speak version=""1.0"" xml:lang=""en-US"">Hi! Try asking me things like 'search for hotels in Seattle', "
-                + @"'search for hotels near<break time=""100ms""/>" + SSMLHelper.SayAs("characters", "LAX")
-                + @" <break time=""200ms""/>airport', or 'show me the reviews of The Bot Resort'</speak>";
+            response.Summary = "Try asking me things like 'order a cappuccino with one sugar' or 'I want a decaf mocha with a shot of caramel' ";
+            response.Speak = @"<speak version=""1.0"" xml:lang=""en-US"">Hi! Hi! Try asking me things like 'order a cappuccino with one sugar', "
+                + @" <break time=""200ms""/>', or 'I want a decaf mocha with a shot of caramel'</speak>";
             response.InputHint = InputHints.ExpectingInput;
 
             await context.PostAsync(response);
@@ -250,7 +251,7 @@
         public async Task Goodbye(IDialogContext context, LuisResult result)
         {
             var goodByeMessage = context.MakeMessage();
-            goodByeMessage.Summary = goodByeMessage.Speak = "Thanks for using Hotel Finder!";
+            goodByeMessage.Summary = goodByeMessage.Speak = "Thanks for using the Smart Coffee Cart!";
             goodByeMessage.InputHint = InputHints.IgnoringInput;
             await context.PostAsync(goodByeMessage);
 
@@ -267,7 +268,7 @@
         {
             OnCompletionAsyncDelegate<CoffeeQuery> processCoffeeOrder = async (context, state) =>
             {
-                var message = "Searching for hotels";
+                var message = "Making sure I got all your requirements";
                 var speech = @"<speak version=""1.0"" xml:lang=""en-US"">Making sure I got all your requirements";
                 if (!string.IsNullOrEmpty(state.CoffeeOwner))
                 {
@@ -379,99 +380,57 @@
             mycoffee.CoffeeType = coffeeQuery.CoffeeType;
             mycoffee.Flavour = coffeeQuery.Flavour;
             mycoffee.MilkType = coffeeQuery.MilkType;
-            mycoffee.HeatLevel = "Hot";
+            mycoffee.HeatLevel = coffeeQuery.HeatLevel;
             mycoffee.Size = "Regular";
+            mycoffee.Sugar = coffeeQuery.Sugar;
             mycoffee.SpoonsOfSugar = coffeeQuery.SpoonsOfSugar;
-            //mycoffee.Sugar = item.Entity;
-            //await Task.Delay(1000);
+            if (mycoffee.CoffeeType.ToUpper().Contains("CAPPUCCINO"))
+            {
+                mycoffee.Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("FLAT WHITE"))
+            {
+                mycoffee.Image = "http://muslimeater.com/wp-content/uploads/2015/09/flat_white_russell_james_smith-1024x683.jpg";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("LONG BLACK"))
+            {
+                mycoffee.Image = "http://www.perfectcoffeeatwork.com.au/images/Long%20Black.JPG";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("SHORT BLACK"))
+            {
+                mycoffee.Image = "http://www.perfectcoffeeatwork.com.au/images/Short%20Black%20Glass%203.JPG";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("MOCHA"))
+            {
+                mycoffee.Image = "http://2.bp.blogspot.com/-I0rdxZj_dwk/UFZQs22fSBI/AAAAAAAAAKw/byN1OWiehWI/s1600/ToffeeMocha.JPG";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("LONG MACCHIATO"))
+            {
+                mycoffee.Image = "http://teamberkeley.files.wordpress.com/2010/07/img_0695.jpg";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("SHORT MACCHIATO"))
+            {
+                mycoffee.Image = "http://www.gbcoffee.com.au/shop/images/coffees/macchiato_short.jpg";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("HOT CHOCOLATE"))
+            {
+                mycoffee.Image = "http://del.h-cdn.co/assets/16/47/1479838584-delish-best-hot-chocolate-pin-1.jpg";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("CHAI"))
+            {
+                mycoffee.Image = "http://img1.cookinglight.timeinc.net/sites/default/files/image/2016/09/main/1610p12-turmeric-chai-latte.jpg";
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("TEA"))
+            {
+                mycoffee.Image = "http://www.lebensbaum.com/sites/default/files/5256_pa.png";
+            }
+            else
+            {
+                mycoffee.Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg";
+            }
+
             return mycoffee;
         }
-
-        /*
-        private IForm<HotelsQuery> BuildHotelsForm()
-        {
-            OnCompletionAsyncDelegate<HotelsQuery> processHotelsSearch = async (context, state) =>
-            {
-                var message = "Searching for hotels";
-                var speech = @"<speak version=""1.0"" xml:lang=""en-US"">Searching for hotels";
-                if (!string.IsNullOrEmpty(state.Destination))
-                {
-                    state.Destination = state.Destination.Capitalize();
-                    message += $" in { state.Destination}...";
-                    speech += $" in { state.Destination}...";
-                }
-                else if (!string.IsNullOrEmpty(state.AirportCode))
-                {
-                    message += $" near {state.AirportCode.ToUpperInvariant()} airport...";
-                    speech += $@" near<break time=""100ms""/>{SSMLHelper.SayAs("characters",state.AirportCode.ToUpperInvariant())} <break time=""200ms""/>airport";
-                }
-                speech += "</speak>";
-
-                var response = context.MakeMessage();
-                response.Summary = message;
-                response.Speak = speech;
-                response.InputHint = InputHints.IgnoringInput;
-                await context.PostAsync(response);
-            };
-
-            return new FormBuilder<HotelsQuery>()
-                .Field(nameof(HotelsQuery.Destination), (state) => string.IsNullOrEmpty(state.AirportCode))
-                .Field(nameof(HotelsQuery.AirportCode), (state) => string.IsNullOrEmpty(state.Destination))
-                .OnCompletion(processHotelsSearch)
-                .Build();
-        }
-
-        private async Task ResumeAfterHotelsFormDialog(IDialogContext context, IAwaitable<HotelsQuery> result)
-        {
-            try
-            {
-                var searchQuery = await result;
-
-                searchQuery.Destination = searchQuery.Destination.Capitalize();
-                var hotels = await this.GetHotelsAsync(searchQuery);
-
-                // We show results differently depending on whether this is a Voice-only, or Voice+screen client
-                bool HasDisplay = true;
-                var messageActivity = context.Activity.AsMessageActivity();
-                if (messageActivity.Entities != null)
-                {
-                    foreach (var entity in messageActivity.Entities)
-                    {
-                        if (entity.Type == "DeviceInfo")
-                        {
-                            dynamic deviceInfo = entity.Properties;
-                            HasDisplay = (bool)deviceInfo.supportsDisplay;
-                        }
-                    }
-                }
-                if (HasDisplay)
-                {
-                    await PresentResultsVisual(context, hotels);
-                }
-                else
-                {
-                    await PresentResultsVoiceOnly(context, hotels);
-                }
-            }
-            catch (FormCanceledException ex)
-            {
-                string reply;
-
-                if (ex.InnerException == null)
-                {
-                    reply = "You have canceled the operation.";
-                }
-                else
-                {
-                    reply = $"Oops! Something went wrong :( Technical Details: {ex.InnerException.Message}";
-                }
-                var errorMessage = context.MakeMessage();
-                errorMessage.Text = errorMessage.Speak = reply;
-                errorMessage.InputHint = InputHints.IgnoringInput;
-                await context.PostAsync(errorMessage);
-            }
-        }
-        */
 
         private async Task PresentCoffeeResultsVisual(IDialogContext context, Coffee mycoffee)
         {
@@ -490,7 +449,7 @@
                 Subtitle = mycoffee.ToString(),
                 Images = new List<CardImage>()
                        {
-                           new CardImage() { Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg" }
+                           new CardImage() { Url = mycoffee.Image }
 
                         },
                 Buttons = new List<CardAction>()
