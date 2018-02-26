@@ -11,6 +11,8 @@
     using Microsoft.Bot.Builder.Luis.Models;
     using Microsoft.Bot.Connector;
     using System.Text;
+    using Newtonsoft.Json;
+    using System.Net.Http;
 
     [Serializable]
     [LuisModel("b6399087-dea1-480b-8dcb-d56a007340ce", "5c226b04f1044ae88ad7442ccde33eea")]
@@ -37,6 +39,8 @@
         public const string IntentLongBlack = "LongBlack";
         public const string IntentMocha = "Mocha";
         */
+
+        public Coffee myCoffeeOrder;
 
         private const string EntityGeographyCity = "builtin.geography.city";
         private const string EntityHotelName = "Hotel";
@@ -145,7 +149,7 @@
                 }
                 else if (item.Type == EntityHeatLevel)
                 {
-                    mycoffee.HeatLevel = item.Entity;
+                    //mycoffee.HeatLevel = item.Entity;
                 }
                 else if (item.Type == EntityMilkOption)
                 {
@@ -161,7 +165,7 @@
                 }
                 else if (item.Type == EntitySugar)
                 {
-                    mycoffee.Sugar = item.Entity;
+                    //mycoffee.Sugar = item.Entity;
                 }
                 else
                 {
@@ -238,7 +242,7 @@
         {
             var response = context.MakeMessage();
             response.Summary = "Try asking me things like 'order a cappuccino with one sugar' or 'I want a decaf mocha with a shot of caramel' ";
-            response.Speak = @"<speak version=""1.0"" xml:lang=""en-US"">Hi! Hi! Try asking me things like 'order a cappuccino with one sugar', "
+            response.Speak = @"<speak version=""1.0"" xml:lang=""en-US"">Hi! Try asking me things like 'order a cappuccino with one sugar', "
                 + @" <break time=""200ms""/>', or 'I want a decaf mocha with a shot of caramel'</speak>";
             response.InputHint = InputHints.ExpectingInput;
 
@@ -246,6 +250,36 @@
 
             context.Wait(this.MessageReceived);
         }
+
+        [LuisIntent("ConfirmOrder")]
+        public async Task ConfirmOrder(IDialogContext context, LuisResult result)
+        {
+
+            string orderJSON = MakeJSON(myCoffeeOrder);
+            
+            using (var client = new HttpClient())
+            {
+                var response = await client.PostAsync(
+                    "https://readify-prod-smartcoffee.azurewebsites.net/api/orders",
+                     new StringContent(orderJSON, Encoding.UTF8, "application/json"));
+                await context.PostAsync($"Sent the order JSON as: {orderJSON}");
+            }
+
+
+            var goodByeMessage = context.MakeMessage();
+            goodByeMessage.Summary = goodByeMessage.Speak = "Your order has been sent. Please check the display at the Coffee Cart for the status of your order. Goodbye.";
+            goodByeMessage.InputHint = InputHints.IgnoringInput;
+            await context.PostAsync(goodByeMessage);
+
+            var completeMessage = context.MakeMessage();
+            completeMessage.Type = ActivityTypes.EndOfConversation;
+            completeMessage.AsEndOfConversationActivity().Code = EndOfConversationCodes.CompletedSuccessfully;
+
+            await context.PostAsync(completeMessage);
+
+            context.Done(default(object));
+        }
+
 
         [LuisIntent("Goodbye")]
         public async Task Goodbye(IDialogContext context, LuisResult result)
@@ -272,29 +306,15 @@
                 var speech = @"<speak version=""1.0"" xml:lang=""en-US"">Making sure I got all your requirements";
                 if (!string.IsNullOrEmpty(state.CoffeeOwner))
                 {
-                    message += $" in { state.CoffeeOwner}...";
-                    speech += $" in { state.CoffeeOwner}...";
+                    message += $" for { state.CoffeeOwner}...";
+                    speech += $" for { state.CoffeeOwner}...";
                 }
                 else if (!string.IsNullOrEmpty(state.CoffeeType))
                 {
-                    message += $" in { state.CoffeeType}...";
-                    speech += $" in { state.CoffeeType}...";
+                    message += $" for a cup of { state.CoffeeType}...";
+                    speech += $" for a cup of { state.CoffeeType}...";
                 }
-                else if (!string.IsNullOrEmpty(state.CoffeeStrength))
-                {
-                    message += $" in { state.CoffeeStrength}...";
-                    speech += $" in { state.CoffeeStrength}...";
-                }
-                else if (!string.IsNullOrEmpty(state.MilkType))
-                {
-                    message += $" in { state.MilkType}...";
-                    speech += $" in { state.MilkType}...";
-                }
-                else if (!string.IsNullOrEmpty(state.SpoonsOfSugar))
-                {
-                    message += $" in { state.SpoonsOfSugar} Sugars...";
-                    speech += $" in { state.SpoonsOfSugar} Sugars...";
-                }
+                
                 speech += "</speak>";
 
                 var response = context.MakeMessage();
@@ -326,7 +346,7 @@
         {
             try
             {
-                Coffee mycoffee = await this.GetCoffeeAsync(result);
+                myCoffeeOrder = await this.GetCoffeeAsync(result);
 
                 // We show results differently depending on whether this is a Voice-only, or Voice+screen client
                 bool HasDisplay = true;
@@ -344,7 +364,7 @@
                 }
                 if (HasDisplay)
                 {
-                    await PresentCoffeeResultsVisual(context, mycoffee);
+                    await PresentCoffeeResultsVisual(context, myCoffeeOrder);
                 }
                 else
                 {
@@ -370,19 +390,219 @@
             }
         }
 
-        private async Task<Coffee> GetCoffeeAsync(IAwaitable<CoffeeQuery> result)
+       
+        private string MakeJSON(Coffee mycoffee)
+        {
+
+            //initialize string 
+           
+            string myjson = "";
+            string name = mycoffee.coffeeOwner;
+            int coffeeType = 0; //FLatWhite
+            int milkVariant = 0; //None
+            int caffeineOption = 0; //Regular
+            bool extraShot = false; //NO EXTRA SHOT
+            int sugarCount = 0; //NO SUGAR
+            int sweetenerCount = 0;//No Sweetner
+            
+
+            //coffeeType
+            //0 - FlatWhite,
+            //1 - ShortMacchiato,
+            //2 - LongMacchiato,
+            //3 - Latte,
+            //4 - Cappuccino,
+            //5 - ShortBlack,
+            //6 - LongBlack,
+            //7 - Mocha,
+            //8 - HotChocolate,
+            //9 - ChaiLatte,
+            //10 - Tea
+
+
+            if (mycoffee.CoffeeType.ToUpper().Contains("CAPPUCCINO"))
+            {
+                coffeeType = 4;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("LATTE") && (!mycoffee.CoffeeType.ToUpper().Contains("CHAI"))) //prevent confusion between chailatte and latte
+            {
+                coffeeType = 3;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("WHITE"))
+            {
+                coffeeType = 0;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("LONG") && mycoffee.CoffeeType.ToUpper().Contains("BLACK"))
+            {
+                coffeeType = 6;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("SHORT") && mycoffee.CoffeeType.ToUpper().Contains("BLACK"))
+            {
+                coffeeType = 5;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("MOCHA"))
+            {
+                coffeeType = 7;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("LONG") && mycoffee.CoffeeType.ToUpper().Contains("MACCHIATO"))
+            {
+                coffeeType = 2;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("SHORT") && mycoffee.CoffeeType.ToUpper().Contains("MACCHIATO"))
+            {
+                coffeeType = 1;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("CHOCOLATE"))
+            {
+                coffeeType = 8;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("CHAI"))
+            {
+                coffeeType = 9;
+            }
+            else if (mycoffee.CoffeeType.ToUpper().Contains("TEA"))
+            {
+                coffeeType = 10;
+            }
+            else
+            {
+                coffeeType = 11;//DID NOT FIND ANY MATCH - For error check. THis should never happen.
+            }
+
+
+
+            // milkVariant
+            //0 - None,
+            //1 - FullCream,
+            //2 - Skim,
+            //3 - LactoseFree, (not supported by the coffee Mob Menu)
+            //4 - Soy,
+            //5 - Almond
+
+
+            if (mycoffee.MilkType.ToUpper().Contains("NONE"))
+            {
+                milkVariant = 0;
+            }
+            else if (mycoffee.MilkType.ToUpper().Contains("CREAM"))
+            {
+                milkVariant = 1;
+            }
+            else if (mycoffee.MilkType.ToUpper().Contains("SKIM"))
+            {
+                milkVariant = 2;
+            }
+            else if (mycoffee.MilkType.ToUpper().Contains("LACTOSE"))
+            {
+                milkVariant = 3;
+            }
+            else if (mycoffee.MilkType.ToUpper().Contains("SOY"))
+            {
+                milkVariant = 4;
+            }
+            else if (mycoffee.MilkType.ToUpper().Contains("ALMOND"))
+            {
+                milkVariant = 5;
+            }
+            else
+            {
+                milkVariant = 6; //SHOULD NEVER HAPPEN
+            }
+
+
+            //caffeineOption
+            //(This is an optional field and can be left out when caffeine doesn’t make sense – e.g. if submitting a Hot Chocolate)
+            //0 - Regular,
+            //1 - Decaf
+            if (mycoffee.CoffeeStrength.ToUpper().Contains("REGULAR"))
+            {
+                caffeineOption = 0;
+            }
+            else if (mycoffee.CoffeeStrength.ToUpper().Contains("DECAF"))
+            {
+                caffeineOption = 1;
+            }
+            else if (mycoffee.CoffeeStrength.ToUpper().Contains("DOUBLE") || mycoffee.CoffeeStrength.ToUpper().Contains("EXTRA"))
+            {
+                extraShot = true;
+            }
+            else
+            {
+               caffeineOption = 2; //SHOULD NEVER HAPPEN
+            }
+
+            //sugarCount
+            //0 - 5
+            if (mycoffee.SpoonsOfSugar.ToUpper().Contains("ZERO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("0") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NONE"))
+            {
+                sugarCount = 0;
+            }
+            else if ( mycoffee.SpoonsOfSugar.ToUpper().Contains("ONE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("1"))
+            {
+                sugarCount = 1;
+            }
+            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("TWO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("2"))
+            {
+                sugarCount = 2;
+            }
+            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("THREE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("3"))
+            {
+                sugarCount = 3;
+            }
+            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FOUR") || mycoffee.SpoonsOfSugar.ToUpper().Contains("4"))
+            {
+                sugarCount = 4;
+            }
+            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FIVE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("5"))
+            {
+                sugarCount = 5;
+            }
+            else
+            {
+                sugarCount = 6;  //SHOULD NEVER HAPPEN
+            }
+
+            if (coffeeType < 11 && milkVariant < 6 && caffeineOption < 2 && sugarCount < 6 )
+            {
+                KioskOrder order = new KioskOrder();
+                order.name = name;
+                order.coffeeType = coffeeType;
+                order.milkVariant = milkVariant;
+                order.caffeineOption = caffeineOption;
+                order.extraShot = extraShot;
+                order.sugarCount = sugarCount;
+                order.sweetenerCount = sweetenerCount;
+                order.SetCommonOptions(); //sets orderflow, source and ordermechanism variables to cortana defaults.
+                myjson = JsonConvert.SerializeObject(order);
+
+
+            }
+            else
+            {
+                
+                myjson = "NOT MATCHED CORRECTLY TO OPTIONS";
+            }
+
+
+        
+
+            return myjson;
+
+    }
+
+    private async Task<Coffee> GetCoffeeAsync(IAwaitable<CoffeeQuery> result)
         {
             var coffeeQuery = await result;
-            var mycoffee = new Coffee();
+            Coffee mycoffee = new Coffee();
             //mycoffee.SetCommonOptions();
             mycoffee.coffeeOwner = coffeeQuery.CoffeeOwner;
             mycoffee.CoffeeStrength = coffeeQuery.CoffeeStrength;
             mycoffee.CoffeeType = coffeeQuery.CoffeeType;
             mycoffee.Flavour = coffeeQuery.Flavour;
             mycoffee.MilkType = coffeeQuery.MilkType;
-            mycoffee.HeatLevel = coffeeQuery.HeatLevel;
+            mycoffee.HeatLevel = "Hot"; //coffeeQuery.HeatLevel;
             mycoffee.Size = "Regular";
-            mycoffee.Sugar = coffeeQuery.Sugar;
+            mycoffee.Sugar = "sugar";// coffeeQuery.Sugar;
             mycoffee.SpoonsOfSugar = coffeeQuery.SpoonsOfSugar;
             if (mycoffee.CoffeeType.ToUpper().Contains("CAPPUCCINO"))
             {
@@ -456,11 +676,11 @@
                        {
                           new CardAction()
                           {
-                              Title = "Place Order",
+                              Title = "Confirm Order",
 
-                                Type = ActionTypes.OpenUrl,
-
-                                Value = $"https://en.wikipedia.org/wiki/Cappuccino"
+                                //Type = ActionTypes.OpenUrl,
+                                Type = ActionTypes.ImBack,
+                                Value = $"Confirm Order"
 
                             }
 
@@ -470,6 +690,8 @@
             resultMessage.Attachments.Add(heroCard.ToAttachment());
            
             await context.PostAsync(resultMessage);
+
+            //await confirmCoffeeOrder(context, resultMessage,mycoffee);
         }
 
         private async Task PresentResultsVisual(IDialogContext context, IEnumerable<Hotel> hotels)

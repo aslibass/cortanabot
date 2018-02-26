@@ -90,4 +90,5 @@ C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\zh-hans\Microsoft.Bot.Buil
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\LuisBot.csproj.CoreCompileInputs.cache
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\Bot Application.dll
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\Bot Application.pdb
-C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Debug\LuisBot.csprojResolveAssemblyReference.cache
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Bot Application.dll.CodeAnalysisLog.xml
+C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\bin\Bot Application.dll.lastcodeanalysissucceeded

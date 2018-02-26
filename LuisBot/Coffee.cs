@@ -37,7 +37,7 @@ namespace LuisBot
         public override string ToString()
         {
             coffeeOrder = "";
-            if (this.Sugar=="No Sugar")
+            if (this.SpoonsOfSugar.ToUpper().Contains("zero") || this.SpoonsOfSugar.ToUpper().Contains("NO"))
             {
                 coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.HeatLevel} {this.CoffeeStrength} strength {this.CoffeeType} with {this.MilkType} milk, along with {this.Flavour} flavour and no sugar";
             }
@@ -57,6 +57,12 @@ namespace LuisBot
             this.SpoonsOfSugar = "none";
             this.Sugar = "No Sugar";
             this.HeatLevel = "Hot";
+        }
+        public string SetupJSON()
+        {
+
+            return "not setup yet";
+
         }
     }  
 
