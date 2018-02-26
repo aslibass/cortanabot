@@ -94,14 +94,18 @@
             progressMessage.Summary = progressMessage.Speak = $"Ready to setup your Order";
             progressMessage.InputHint = InputHints.IgnoringInput;
             await context.PostAsync(progressMessage);
-            
+
             //set up coffee object from the entities
             //Coffee mycoffee = this.BotEntityRecognition(result.Intents[0].Intent, result);
 
             // Use a FormDialog to query the user for missing destination, if necessary
             
-            CoffeeQuery coffeeQuery = this.CoffeeEntityRecognition(result.Intents[0].Intent, result);
+            //Setup the global coffee order basics gleaned from the incoming entities.
+            myCoffeeOrder = this.BotEntityRecognition(result.Intents[0].Intent, result);
 
+            //Drive a form to get missing information at the first instance
+            CoffeeQuery coffeeQuery = this.CoffeeEntityRecognition(result.Intents[0].Intent, result);
+            myCoffeeOrder = this.BotEntityRecognition(result.Intents[0].Intent, result);
             var coffeeFormDialog = new FormDialog<CoffeeQuery>(coffeeQuery, this.BuildCoffeeForm, FormOptions.PromptInStart, result.Entities);
             context.Call(coffeeFormDialog, this.ResumeAfterCoffeeFormDialog);
 
@@ -127,7 +131,7 @@
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
             //new cup of coffee
             CoffeeQuery mycoffee = new CoffeeQuery();
-            //mycoffee.SetCommonOptions();
+            
             mycoffee.CoffeeType = result.Intents[0].Intent;
 
             //initialize to most common options
@@ -165,7 +169,7 @@
                 }
                 else if (item.Type == EntitySugar)
                 {
-                    //mycoffee.Sugar = item.Entity;
+                    mycoffee.Sugar = item.Entity;
                 }
                 else
                 {
@@ -179,12 +183,12 @@
 
 
         //Collect the entities under the Intent that define the sugars, size, flavours etc related to the coffee
-        public Coffee BotEntityRecognition(string intentName, LuisResult result)
+       public Coffee BotEntityRecognition(string intentName, LuisResult result)
         {
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
             //new cup of coffee
             var mycoffee = new Coffee();
-            //mycoffee.SetCommonOptions();
+            mycoffee.SetCommonOptions();
             mycoffee.CoffeeType = result.Intents[0].Intent;
 
             //initialize to most common options
@@ -233,7 +237,7 @@
             return mycoffee;
             //return mycoffee.ToString();
         }
-
+        
                     
         
 
@@ -257,14 +261,15 @@
 
             string orderJSON = MakeJSON(myCoffeeOrder);
             
-            using (var client = new HttpClient())
+            /*using (var client = new HttpClient())
             {
                 var response = await client.PostAsync(
                     "https://readify-prod-smartcoffee.azurewebsites.net/api/orders",
                      new StringContent(orderJSON, Encoding.UTF8, "application/json"));
                 await context.PostAsync($"Sent the order JSON as: {orderJSON}");
             }
-
+            */
+            await context.PostAsync($"Code Commented Out to Send the order JSON as: {orderJSON}");
 
             var goodByeMessage = context.MakeMessage();
             goodByeMessage.Summary = goodByeMessage.Speak = "Your order has been sent. Please check the display at the Coffee Cart for the status of your order. Goodbye.";
@@ -346,7 +351,8 @@
         {
             try
             {
-                myCoffeeOrder = await this.GetCoffeeAsync(result);
+                //myCoffeeOrder = 
+                await this.GetCoffeeAsync(result);
 
                 // We show results differently depending on whether this is a Voice-only, or Voice+screen client
                 bool HasDisplay = true;
@@ -590,66 +596,87 @@
 
     }
 
-    private async Task<Coffee> GetCoffeeAsync(IAwaitable<CoffeeQuery> result)
+    private async Task GetCoffeeAsync(IAwaitable<CoffeeQuery> result)
         {
             var coffeeQuery = await result;
-            Coffee mycoffee = new Coffee();
+            //Coffee mycoffee = new Coffee();
             //mycoffee.SetCommonOptions();
-            mycoffee.coffeeOwner = coffeeQuery.CoffeeOwner;
-            mycoffee.CoffeeStrength = coffeeQuery.CoffeeStrength;
-            mycoffee.CoffeeType = coffeeQuery.CoffeeType;
-            mycoffee.Flavour = coffeeQuery.Flavour;
-            mycoffee.MilkType = coffeeQuery.MilkType;
-            mycoffee.HeatLevel = "Hot"; //coffeeQuery.HeatLevel;
-            mycoffee.Size = "Regular";
-            mycoffee.Sugar = "sugar";// coffeeQuery.Sugar;
-            mycoffee.SpoonsOfSugar = coffeeQuery.SpoonsOfSugar;
-            if (mycoffee.CoffeeType.ToUpper().Contains("CAPPUCCINO"))
+            if (!string.IsNullOrEmpty(coffeeQuery.CoffeeOwner))
             {
-                mycoffee.Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg";
+                myCoffeeOrder.coffeeOwner = coffeeQuery.CoffeeOwner;
+
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("FLAT WHITE"))
+            if (!string.IsNullOrEmpty(coffeeQuery.CoffeeStrength))
             {
-                mycoffee.Image = "http://muslimeater.com/wp-content/uploads/2015/09/flat_white_russell_james_smith-1024x683.jpg";
+                myCoffeeOrder.CoffeeStrength = coffeeQuery.CoffeeStrength;
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("LONG BLACK"))
+            if (!string.IsNullOrEmpty(coffeeQuery.CoffeeType))
             {
-                mycoffee.Image = "http://www.perfectcoffeeatwork.com.au/images/Long%20Black.JPG";
+                myCoffeeOrder.CoffeeType = coffeeQuery.CoffeeType;
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("SHORT BLACK"))
+            if (!string.IsNullOrEmpty(coffeeQuery.Flavour))
             {
-                mycoffee.Image = "http://www.perfectcoffeeatwork.com.au/images/Short%20Black%20Glass%203.JPG";
+                myCoffeeOrder.Flavour = coffeeQuery.Flavour;
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("MOCHA"))
+            if (!string.IsNullOrEmpty(coffeeQuery.MilkType))
             {
-                mycoffee.Image = "http://2.bp.blogspot.com/-I0rdxZj_dwk/UFZQs22fSBI/AAAAAAAAAKw/byN1OWiehWI/s1600/ToffeeMocha.JPG";
+                myCoffeeOrder.MilkType = coffeeQuery.MilkType;
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("LONG MACCHIATO"))
+            if (!string.IsNullOrEmpty(coffeeQuery.Sugar))
             {
-                mycoffee.Image = "http://teamberkeley.files.wordpress.com/2010/07/img_0695.jpg";
+                myCoffeeOrder.Sugar = coffeeQuery.Sugar;
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("SHORT MACCHIATO"))
+            if (!string.IsNullOrEmpty(coffeeQuery.SpoonsOfSugar))
             {
-                mycoffee.Image = "http://www.gbcoffee.com.au/shop/images/coffees/macchiato_short.jpg";
+                myCoffeeOrder.SpoonsOfSugar = coffeeQuery.SpoonsOfSugar;
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("HOT CHOCOLATE"))
+           
+            if (myCoffeeOrder.CoffeeType.ToUpper().Contains("CAPPUCCINO"))
             {
-                mycoffee.Image = "http://del.h-cdn.co/assets/16/47/1479838584-delish-best-hot-chocolate-pin-1.jpg";
+                myCoffeeOrder.Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg";
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("CHAI"))
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("FLAT WHITE"))
             {
-                mycoffee.Image = "http://img1.cookinglight.timeinc.net/sites/default/files/image/2016/09/main/1610p12-turmeric-chai-latte.jpg";
+                myCoffeeOrder.Image = "http://muslimeater.com/wp-content/uploads/2015/09/flat_white_russell_james_smith-1024x683.jpg";
             }
-            else if (mycoffee.CoffeeType.ToUpper().Contains("TEA"))
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("LONG BLACK"))
             {
-                mycoffee.Image = "http://www.lebensbaum.com/sites/default/files/5256_pa.png";
+                myCoffeeOrder.Image = "http://www.perfectcoffeeatwork.com.au/images/Long%20Black.JPG";
+            }
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("SHORT BLACK"))
+            {
+                myCoffeeOrder.Image = "http://www.perfectcoffeeatwork.com.au/images/Short%20Black%20Glass%203.JPG";
+            }
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("MOCHA"))
+            {
+                myCoffeeOrder.Image = "http://2.bp.blogspot.com/-I0rdxZj_dwk/UFZQs22fSBI/AAAAAAAAAKw/byN1OWiehWI/s1600/ToffeeMocha.JPG";
+            }
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("LONG MACCHIATO"))
+            {
+                myCoffeeOrder.Image = "http://teamberkeley.files.wordpress.com/2010/07/img_0695.jpg";
+            }
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("SHORT MACCHIATO"))
+            {
+                myCoffeeOrder.Image = "http://www.gbcoffee.com.au/shop/images/coffees/macchiato_short.jpg";
+            }
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("HOT CHOCOLATE"))
+            {
+                myCoffeeOrder.Image = "http://del.h-cdn.co/assets/16/47/1479838584-delish-best-hot-chocolate-pin-1.jpg";
+            }
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("CHAI"))
+            {
+                myCoffeeOrder.Image = "http://img1.cookinglight.timeinc.net/sites/default/files/image/2016/09/main/1610p12-turmeric-chai-latte.jpg";
+            }
+            else if (myCoffeeOrder.CoffeeType.ToUpper().Contains("TEA"))
+            {
+                myCoffeeOrder.Image = "http://www.lebensbaum.com/sites/default/files/5256_pa.png";
             }
             else
             {
-                mycoffee.Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg";
+                myCoffeeOrder.Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Classic_Cappuccino.jpg/1200px-Classic_Cappuccino.jpg";
             }
 
-            return mycoffee;
+            //return mycoffee;
         }
 
         private async Task PresentCoffeeResultsVisual(IDialogContext context, Coffee mycoffee)
@@ -694,7 +721,7 @@
             //await confirmCoffeeOrder(context, resultMessage,mycoffee);
         }
 
-        private async Task PresentResultsVisual(IDialogContext context, IEnumerable<Hotel> hotels)
+        /* private async Task PresentResultsVisual(IDialogContext context, IEnumerable<Hotel> hotels)
         {
             var progressMessage = context.MakeMessage();
             progressMessage.Summary = progressMessage.Speak = $"I found {hotels.Count()} hotels. Showing them for you now:";
@@ -731,15 +758,15 @@
             }
 
             await context.PostAsync(resultMessage);
-        }
+        }*/
 
-
+        /*
         private async Task PresentResultsVoiceOnly(IDialogContext context, IEnumerable<Hotel> hotels)
         {
             // For voice, we'll limit results to first three otherwise it gets to be too long going through a long list using voice.
             // Aa well designed skill would offer the user the option to hear "Next Results" if the first ones don't interest them.
             // Not implemented in this sample.
-
+            
             var hotelList = hotels.ToList();
             context.ConversationData.SetValue<List<Hotel>>("Hotels", hotelList);
 
@@ -780,9 +807,10 @@
                 speak: SSMLHelper.Speak($"Which one do you want to hear more about?"));
 
             PromptDialog.Choice(context, HotelChoiceReceivedAsync, promptOptions);
-        }
+            
+        } */
 
-        private async Task HotelChoiceReceivedAsync(IDialogContext context, IAwaitable<string> result)
+        /*private async Task HotelChoiceReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
 
             int choiceIndex = 0;
@@ -811,9 +839,9 @@
             }
 
             context.Wait(this.MessageReceived);
-        }
+        }*/
 
-        private async Task<IEnumerable<Hotel>> GetHotelsAsync(HotelsQuery searchQuery)
+        /*private async Task<IEnumerable<Hotel>> GetHotelsAsync(HotelsQuery searchQuery)
         {
             var hotelNames = new List<string>()
                 {"Excellent", "Splendid", "Supreme", "Excelsior", "High Class" };
@@ -843,7 +871,7 @@
             await Task.Delay(3000);
 
             return hotels;
-        }
+        }*/
     }
 
        
