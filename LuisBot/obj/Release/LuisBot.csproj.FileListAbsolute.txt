@@ -102,3 +102,55 @@ C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Release\LuisBot.csprojReso
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Release\LuisBot.csproj.CoreCompileInputs.cache
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Release\Bot Application.dll
 C:\Users\vijoseph\Source\Repos\cortanabot\LuisBot\obj\Release\Bot Application.pdb
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Bot Application.dll.config
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Bot Application.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Bot Application.pdb
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Autofac.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Chronic.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.Autofac.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.Bot.Connector.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Logging.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Tokens.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.Rest.ClientRuntime.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Newtonsoft.Json.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.Net.Http.Formatting.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.Web.Http.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.Web.Http.WebHost.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Autofac.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.Bot.Builder.Autofac.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.Bot.Connector.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Logging.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.IdentityModel.Tokens.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\Newtonsoft.Json.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.Net.Http.Formatting.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.Web.Http.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\System.Web.Http.WebHost.xml
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\ar\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\cs\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\de-dE\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\en\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\es\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\fa\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\fr\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\it\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\ja\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\nl\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\pt-BR\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\ru\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\obj\Release\LuisBot.csprojResolveAssemblyReference.cache
+C:\Data\coratanabotMarch\cortanabot\LuisBot\obj\Release\LuisBot.csproj.CoreCompileInputs.cache
+C:\Data\coratanabotMarch\cortanabot\LuisBot\obj\Release\Bot Application.dll
+C:\Data\coratanabotMarch\cortanabot\LuisBot\obj\Release\Bot Application.pdb

@@ -43,7 +43,7 @@ namespace LuisBot
             }
             else
             {
-                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.HeatLevel} {this.CoffeeStrength} strength {this.CoffeeType} with {this.MilkType} milk, along with {this.Flavour} flavour and {this.SpoonsOfSugar} sugar(s)";
+                coffeeOrder = $"{this.coffeeOwner} requested for a {this.Size} sized, {this.HeatLevel} {this.CoffeeStrength} strength {this.CoffeeType} with {this.MilkType} milk, along with {this.Flavour} flavour and {this.SpoonsOfSugar} {this.Sugar}";
             }
             return coffeeOrder;
         }
@@ -51,11 +51,11 @@ namespace LuisBot
         {
 
             this.Size = "Regular";
-            this.CoffeeStrength = "Regular";
-            this.Flavour = "no flavouring";
-            this.MilkType = "Full Cream";
-            this.SpoonsOfSugar = "No";
-            this.Sugar = "Sugar";
+            //this.CoffeeStrength = "Regular";
+            //this.Flavour = "no flavouring";
+            //this.MilkType = "Full Cream";
+            //this.SpoonsOfSugar = "No";
+            //this.Sugar = "Sugar";
             this.HeatLevel = "Hot";
         }
         

@@ -13,6 +13,7 @@
     using System.Text;
     using Newtonsoft.Json;
     using System.Net.Http;
+    using System.Net.Http.Headers;
 
     [Serializable]
     [LuisModel("b6399087-dea1-480b-8dcb-d56a007340ce", "5c226b04f1044ae88ad7442ccde33eea")]
@@ -98,14 +99,26 @@
             //set up coffee object from the entities
             //Coffee mycoffee = this.BotEntityRecognition(result.Intents[0].Intent, result);
 
-            // Use a FormDialog to query the user for missing destination, if necessary
-            
-            //Setup the global coffee order basics gleaned from the incoming entities.
-            myCoffeeOrder = this.BotEntityRecognition(result.Intents[0].Intent, result);
 
+            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
+
+            /*foreach (EntityRecommendation item in listOfEntitiesFound)
+            {
+                await context.PostAsync($"Coffee Entity found: {item.Type} has the value {item.Entity}");
+            }*/
+
+
+
+            // Use a FormDialog to query the user for missing destination, if necessary
+
+            //Setup the global coffee order basics gleaned from the incoming entities.
+            //myCoffeeOrder = new Coffee();
+            myCoffeeOrder = this.BotEntityRecognition(result);
+            //await context.PostAsync($"Coffee Object set as: {myCoffeeOrder.ToString()}");
             //Drive a form to get missing information at the first instance
-            CoffeeQuery coffeeQuery = this.CoffeeEntityRecognition(result.Intents[0].Intent, result);
-            myCoffeeOrder = this.BotEntityRecognition(result.Intents[0].Intent, result);
+            CoffeeQuery coffeeQuery = this.CoffeeEntityRecognition();
+            //await context.PostAsync($"Coffee Query object set as: {coffeeQuery.ToString()}");
+            
             var coffeeFormDialog = new FormDialog<CoffeeQuery>(coffeeQuery, this.BuildCoffeeForm, FormOptions.PromptInStart, result.Entities);
             context.Call(coffeeFormDialog, this.ResumeAfterCoffeeFormDialog);
 
@@ -126,18 +139,83 @@
             context.Wait(MessageReceived);
         }
 
-        public CoffeeQuery CoffeeEntityRecognition(string intentName, LuisResult result)
+        public CoffeeQuery CoffeeEntityRecognition()
         {
-            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
+            //IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
             //new cup of coffee
-            CoffeeQuery mycoffee = new CoffeeQuery();
-            
-            mycoffee.CoffeeType = result.Intents[0].Intent;
+            // CoffeeQuery mycoffee = new CoffeeQuery();
+            CoffeeQuery myCoffeeQuery = new CoffeeQuery();
+            //mycoffee.CoffeeType = result.Intents[0].Intent;
 
             //initialize to most common options
 
+            if (!string.IsNullOrEmpty(myCoffeeOrder.coffeeOwner))
+            {
+                myCoffeeQuery.CoffeeOwner = myCoffeeOrder.coffeeOwner;
+            }
+            if (!string.IsNullOrEmpty(myCoffeeOrder.CoffeeType))
+            {
+                myCoffeeQuery.CoffeeType = myCoffeeOrder.CoffeeType;
+                if (myCoffeeOrder.CoffeeType.ToUpper().Contains("BLACK") || myCoffeeOrder.CoffeeType.ToUpper().Contains("MACH"))
+                {
+                    myCoffeeOrder.MilkType = "None";
+                    myCoffeeQuery.MilkType = "None";
+                    myCoffeeQuery.Flavour = "None";
+                    
+                }
+                if (myCoffeeOrder.CoffeeType.ToUpper().Contains("LONG"))
+                {
+                    myCoffeeOrder.CoffeeStrength = "Extra Shot";
+                    
 
-            foreach (EntityRecommendation item in listOfEntitiesFound)
+                }
+
+            }
+            if (!string.IsNullOrEmpty(myCoffeeOrder.CoffeeStrength))
+            {
+                myCoffeeQuery.CoffeeStrength = myCoffeeOrder.CoffeeStrength;
+            }
+            if (!string.IsNullOrEmpty(myCoffeeOrder.Flavour))
+            {
+                myCoffeeQuery.Flavour = myCoffeeOrder.Flavour;
+            }
+            if (!string.IsNullOrEmpty(myCoffeeOrder.MilkType))
+            {
+                myCoffeeQuery.MilkType = myCoffeeOrder.MilkType;
+            }
+            
+            if (!string.IsNullOrEmpty(myCoffeeOrder.SpoonsOfSugar))
+            {
+                if ((myCoffeeOrder.SpoonsOfSugar.ToUpper().Contains("NO")) || (myCoffeeOrder.SpoonsOfSugar.ToUpper().Contains("ZERO")) || (myCoffeeOrder.SpoonsOfSugar.ToUpper().Contains("0")))
+                {
+                    myCoffeeOrder.Sugar = "None";
+                }
+                myCoffeeQuery.SpoonsOfSugar = myCoffeeOrder.SpoonsOfSugar;
+            }
+            if (!string.IsNullOrEmpty(myCoffeeOrder.Sugar))
+            {
+                if (myCoffeeOrder.Sugar.ToUpper().Contains("SUGAR"))
+                {
+                    //myCoffeeQuery.Sugar = CoffeeQuery.SugarType.Sugar;
+                    myCoffeeQuery.SugarType = "Sugar";
+
+                }
+                else if (myCoffeeOrder.Sugar.ToUpper().Contains("SWEETNER") || myCoffeeOrder.Sugar.ToUpper().Contains("ARTIFICIAL"))
+                {
+                    //myCoffeeQuery.Sugar = CoffeeQuery.SugarType.ArtificialSweetner;
+                    myCoffeeQuery.SugarType = "Artificial Sweetner";
+                }
+                else
+                {
+                    //myCoffeeQuery.Sugar = CoffeeQuery.SugarType.None;
+                    myCoffeeQuery.SugarType = "None";
+                }
+            }
+
+
+
+
+            /*foreach (EntityRecommendation item in listOfEntitiesFound)
             {
                 if (item.Type == EntityCoffeeStrength)
                 {
@@ -175,25 +253,22 @@
                 {
                     //add error handling code
                 }
-            }
+            }*/
 
-            return mycoffee;
+            return myCoffeeQuery;
+            //return mycoffee;
             //return mycoffee.ToString();
         }
 
 
         //Collect the entities under the Intent that define the sugars, size, flavours etc related to the coffee
-       public Coffee BotEntityRecognition(string intentName, LuisResult result)
+        public Coffee BotEntityRecognition(LuisResult result)
         {
-            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-            //new cup of coffee
             var mycoffee = new Coffee();
             mycoffee.SetCommonOptions();
-            mycoffee.CoffeeType = result.Intents[0].Intent;
-
-            //initialize to most common options
-
-
+            //List<EntityRecommendation> listOfEntitiesFound = new List<EntityRecommendation>(result.Entities);
+            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
+                   
             foreach (EntityRecommendation item in listOfEntitiesFound)
             {
                 if (item.Type == EntityCoffeeStrength)
@@ -233,7 +308,12 @@
                     //add error handling code
                 }
             }
-
+                
+                /*
+           
+                */
+              
+            
             return mycoffee;
             //return mycoffee.ToString();
         }
@@ -261,15 +341,16 @@
 
             string orderJSON = MakeJSON(myCoffeeOrder);
             
-            /*using (var client = new HttpClient())
+            using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "947914b7-8d09-42fc-b24b-05fc4870ebeb");
                 var response = await client.PostAsync(
                     "https://readify-prod-smartcoffee.azurewebsites.net/api/orders",
                      new StringContent(orderJSON, Encoding.UTF8, "application/json"));
-                await context.PostAsync($"Sent the order JSON as: {orderJSON}");
+                //await context.PostAsync($"Sent the order JSON as: {orderJSON}");
             }
-            */
-            await context.PostAsync($"Code Commented Out to Send the order JSON as: {orderJSON}");
+            
+            //await context.PostAsync($"Code Commented Out to Send the order JSON as: {orderJSON}");
 
             var goodByeMessage = context.MakeMessage();
             goodByeMessage.Summary = goodByeMessage.Speak = "Your order has been sent. Please check the display at the Coffee Cart for the status of your order. Goodbye.";
@@ -330,6 +411,7 @@
             };
             return new FormBuilder<CoffeeQuery>()
                 .AddRemainingFields()
+                //.Field(nameof(CoffeeQuery.Sugar), validate: ValidateSugarInformation)
                 .OnCompletion(processCoffeeOrder)
                 .Build();
 
@@ -346,6 +428,25 @@
 
 
         }
+
+       /* private static Task<ValidateResult> ValidateSugarInformation(CoffeeQuery state, object response)
+        {
+            var result = new ValidateResult();
+            string contactInfo = string.Empty;
+            
+            if (GetTwitterHandle((string)response, out contactInfo) || GetEmailAddress((string)response, out contactInfo))
+            {
+                result.IsValid = true;
+                result.Value = contactInfo;
+            }
+            else
+            {
+                result.IsValid = false;
+                result.Feedback = "You did not enter valid email address or twitter handle. Make sure twitter handle starts with @.";
+            }
+            return Task.FromResult(result);
+        }
+        */
 
         private async Task ResumeAfterCoffeeFormDialog(IDialogContext context, IAwaitable<CoffeeQuery> result)
         {
@@ -537,38 +638,82 @@
                caffeineOption = 2; //SHOULD NEVER HAPPEN
             }
 
-            //sugarCount
-            //0 - 5
-            if (mycoffee.SpoonsOfSugar.ToUpper().Contains("ZERO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("0") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NONE"))
+            if(mycoffee.Sugar.ToUpper().Contains("SUGAR"))
+            {
+                sweetenerCount = 0;
+                if (mycoffee.SpoonsOfSugar.ToUpper().Contains("ZERO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("0") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NONE"))
+                {
+                    sugarCount = 0;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("ONE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("1"))
+                {
+                    sugarCount = 1;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("TWO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("2"))
+                {
+                    sugarCount = 2;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("THREE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("3"))
+                {
+                    sugarCount = 3;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FOUR") || mycoffee.SpoonsOfSugar.ToUpper().Contains("4"))
+                {
+                    sugarCount = 4;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FIVE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("5"))
+                {
+                    sugarCount = 5;
+                }
+                else
+                {
+                    sugarCount = 6;  //SHOULD NEVER HAPPEN
+                }
+
+            }
+            if (mycoffee.Sugar.ToUpper().Contains("ARTIFICIAL") || mycoffee.Sugar.ToUpper().Contains("SWEETNER"))
             {
                 sugarCount = 0;
+                if (mycoffee.SpoonsOfSugar.ToUpper().Contains("ZERO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("0") || mycoffee.SpoonsOfSugar.ToUpper().Contains("NONE"))
+                {
+                    sweetenerCount = 0;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("ONE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("1"))
+                {
+                    sweetenerCount = 1;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("TWO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("2"))
+                {
+                    sweetenerCount = 2;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("THREE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("3"))
+                {
+                    sweetenerCount = 3;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FOUR") || mycoffee.SpoonsOfSugar.ToUpper().Contains("4"))
+                {
+                    sweetenerCount = 4;
+                }
+                else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FIVE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("5"))
+                {
+                    sweetenerCount = 5;
+                }
+                else
+                {
+                    sweetenerCount = 6;  //SHOULD NEVER HAPPEN
+                }
             }
-            else if ( mycoffee.SpoonsOfSugar.ToUpper().Contains("ONE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("1"))
+            if (mycoffee.Sugar.ToUpper().Contains("NO") || mycoffee.Sugar.ToUpper().Contains("NONE"))
             {
-                sugarCount = 1;
-            }
-            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("TWO") || mycoffee.SpoonsOfSugar.ToUpper().Contains("2"))
-            {
-                sugarCount = 2;
-            }
-            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("THREE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("3"))
-            {
-                sugarCount = 3;
-            }
-            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FOUR") || mycoffee.SpoonsOfSugar.ToUpper().Contains("4"))
-            {
-                sugarCount = 4;
-            }
-            else if (mycoffee.SpoonsOfSugar.ToUpper().Contains("FIVE") || mycoffee.SpoonsOfSugar.ToUpper().Contains("5"))
-            {
-                sugarCount = 5;
-            }
-            else
-            {
-                sugarCount = 6;  //SHOULD NEVER HAPPEN
+                sugarCount = 0;
+                sweetenerCount = 0;
             }
 
-            if (coffeeType < 11 && milkVariant < 6 && caffeineOption < 2 && sugarCount < 6 )
+
+            //sugarCount
+            //0 - 5
+
+            if (coffeeType < 11 && milkVariant < 6 && caffeineOption < 2 && sugarCount < 6 && sweetenerCount < 6)
             {
                 KioskOrder order = new KioskOrder();
                 order.name = name;
@@ -622,10 +767,34 @@
             {
                 myCoffeeOrder.MilkType = coffeeQuery.MilkType;
             }
-            if (!string.IsNullOrEmpty(coffeeQuery.Sugar))
+            if(!string.IsNullOrEmpty(coffeeQuery.SugarType))
             {
-                myCoffeeOrder.Sugar = coffeeQuery.Sugar;
+                if (coffeeQuery.SugarType.ToUpper().Contains("SUGAR"))
+                {
+                    myCoffeeOrder.Sugar = "Sugar";
+                }
+                else if (coffeeQuery.SugarType.ToUpper().Contains("ARTIFICIAL") || coffeeQuery.SugarType.ToUpper().Contains("SWEETNER"))
+                {
+                    myCoffeeOrder.Sugar = "Artificial Sweetner";
+                }
+                else 
+                {
+                    myCoffeeOrder.Sugar = "None";
+                }
             }
+            /*if (coffeeQuery.Sugar.Equals(CoffeeQuery.SugarType.Sugar))
+            {
+                myCoffeeOrder.Sugar = "Sugar";
+            }
+            if (coffeeQuery.Sugar.Equals(CoffeeQuery.SugarType.ArtificialSweetner))
+            {
+                myCoffeeOrder.Sugar = "Artificial Sweetner";
+            }
+            if (coffeeQuery.Sugar.Equals(CoffeeQuery.SugarType.None))
+            {
+                myCoffeeOrder.Sugar = "None";
+            }
+            */
             if (!string.IsNullOrEmpty(coffeeQuery.SpoonsOfSugar))
             {
                 myCoffeeOrder.SpoonsOfSugar = coffeeQuery.SpoonsOfSugar;
